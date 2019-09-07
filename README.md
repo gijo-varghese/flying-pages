@@ -16,28 +16,33 @@ Quickstart:
 With async/defer:
 
 ```html
+<script defer src="flying-pages.js"></script>
 <script>
-  window.flyingPagesCallback = function() {
-    flyingPages();
-  };
-</script>
-<script src="flying-pages.min.js" asyc defer></script>
-```
-
-With options:
-
-```html
-<script>
-  window.flyingPagesCallback = function() {
+  window.addEventListener("load", () => {
     flyingPages({
       startDelay: 0,
       ignoreKeywords: [],
       maxRPS: 3,
       mouseHoverDelay: 200
     });
-  };
+  });
 </script>
-<script src="flying-pages.min.js" asyc defer></script>
+```
+
+With options:
+
+```html
+<script defer src="flying-pages.js"></script>
+<script>
+  window.addEventListener("load", () => {
+    flyingPages({
+      startDelay: 0,
+      ignoreKeywords: [],
+      maxRPS: 3,
+      mouseHoverDelay: 200
+    });
+  });
+</script>
 ```
 
 `flyingPages` accepts an optional options object with the following parameters:

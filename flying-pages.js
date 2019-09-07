@@ -57,7 +57,7 @@ const addUrlToQueue = (url, processImmediately = false) => {
   if (window.location.href === url) return;
 
   // Ignore keywords in the array, if matched to the url
-  window.flyingPagesCofig.ignoreKeywords.forEach(keyword => {
+  window.FPConfig.ignoreKeywords.forEach(keyword => {
     if (url.includes(keyword)) return;
   });
 
@@ -73,7 +73,7 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const url = entry.target.href;
-      addUrlToQueue(url, !window.flyingPagesCofig.maxRPS);
+      addUrlToQueue(url, !window.FPConfig.maxRPS);
     }
   });
 });
@@ -81,7 +81,7 @@ const observer = new IntersectionObserver(entries => {
 // Queue that process requests based on max RPS (requests per second)
 const queue = setInterval(() => {
   Array.from(toPrefetch)
-    .slice(0, window.flyingPagesCofig.maxRPS)
+    .slice(0, window.FPConfig.maxRPS)
     .forEach(url => {
       prefetchWithTimeout(url);
       alreadyPrefetched.add(url);
@@ -97,7 +97,7 @@ const mouseOverListener = event => {
   if (elm && elm.href && !alreadyPrefetched.has(elm.href)) {
     hoverTimer = setTimeout(() => {
       addUrlToQueue(elm.href, true);
-    }, window.flyingPagesCofig.mouseHoverDelay);
+    }, window.FPConfig.mouseHoverDelay);
   }
 };
 
@@ -164,17 +164,11 @@ const flyingPages = (options = {}) => {
     mouseHoverDelay: 200
   };
 
-  // Combine default options with received options to create the new config
-  const config = Object.assign(defaultOptions, options);
-
-  // Set the config in window for easy access
-  window.flyingPagesCofig = config;
+  // Combine default options with received options to create the new config and set the config in window for easy access
+  window.FPConfig = Object.assign(defaultOptions, options);
 
   // Delay preloading if there a startDelay, otherwise start on cpu idle
   if (config.startDelay)
     setTimeout(() => startPreloading(), config.startDelay * 1000);
   else requestIdleCallback(() => startPreloading());
 };
-
-// If Flying Pages is loaded via async/defer, try to call the callback function
-window.flyingPagesCallback && window.flyingPagesCallback();
