@@ -6,9 +6,13 @@
 
 > Flying Pages preload pages before the user click on it, making them load instantly
 
-## Demo
+## Quick Links
 
-Open [https://wpspeedmatters.com](https://wpspeedmatters.com) and click on any post
+- Demo: Open [https://wpspeedmatters.com](https://wpspeedmatters.com) and click on any post
+- [WordPress Plugin](https://wordpress.org/plugins/flying-pages/)
+- [Quicklink vs Instant.page vs Flying Pages](https://wpspeedmatters.com/quicklink-vs-instant-page-vs-flying-pages/)
+
+<a href="https://paypal.me/gijo" target="_blank"><img src="buy-me-a-coffee.png" alt="Buy Me A Coffee" style="height: 50px" ></a>
 
 ## Usage
 
@@ -27,12 +31,7 @@ With async/defer:
 <script defer src="flying-pages.min.js"></script>
 <script>
   window.addEventListener("load", () => {
-    flyingPages({
-      delay: 0,
-      ignoreKeywords: [],
-      maxRPS: 3,
-      hoverDelay: 200
-    });
+    flyingPages();
   });
 </script>
 ```
