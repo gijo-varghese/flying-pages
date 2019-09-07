@@ -16,7 +16,7 @@ Quickstart:
 With async/defer:
 
 ```html
-<script defer src="flying-pages.js"></script>
+<script defer src="flying-pages.min.js"></script>
 <script>
   window.addEventListener("load", () => {
     flyingPages({
@@ -32,7 +32,7 @@ With async/defer:
 With options:
 
 ```html
-<script defer src="flying-pages.js"></script>
+<script defer src="flying-pages.min.js"></script>
 <script>
   window.addEventListener("load", () => {
     flyingPages({
