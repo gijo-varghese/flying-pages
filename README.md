@@ -20,10 +20,10 @@ With async/defer:
 <script>
   window.addEventListener("load", () => {
     flyingPages({
-      startDelay: 0,
+      delay: 0,
       ignoreKeywords: [],
       maxRPS: 3,
-      mouseHoverDelay: 200
+      hoverDelay: 200
     });
   });
 </script>
@@ -36,10 +36,10 @@ With options:
 <script>
   window.addEventListener("load", () => {
     flyingPages({
-      startDelay: 0,
+      delay: 0,
       ignoreKeywords: [],
       maxRPS: 3,
-      mouseHoverDelay: 200
+      hoverDelay: 200
     });
   });
 </script>
@@ -47,10 +47,10 @@ With options:
 
 `flyingPages` accepts an optional options object with the following parameters:
 
-- `startDelay`: Start prefetching after a delay (in seconds). If not set or set to 0, will be started when browser becomes idle, using `requestIdleCallback`. Default to 0.
+- `delay`: Start prefetching after a delay (in seconds). If not set or set to 0, will be started when browser becomes idle, using `requestIdleCallback`. Default to 0.
 - `ignoreKeywords`: An array of keywords to ignore from prefetching. Example `['/logout','/cart','about.html','sample.png','#']`.
 - `maxRPS`: Maximum requests per second the queue should process. Set to 0 to process all requests immediately (without queue). Default to 3.
-- `mouseHoverDelay`: Delay in prefetching links on mouse hover (in milliseconds). Default 200.
+- `hoverDelay`: Delay in prefetching links on mouse hover (in milliseconds). Default 200.
 
 ## How it Works?
 

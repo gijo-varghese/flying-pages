@@ -97,7 +97,7 @@ const mouseOverListener = event => {
   if (elm && elm.href && !alreadyPrefetched.has(elm.href)) {
     hoverTimer = setTimeout(() => {
       addUrlToQueue(elm.href, true);
-    }, window.FPConfig.mouseHoverDelay);
+    }, window.FPConfig.hoverDelay);
   }
 };
 
@@ -158,17 +158,17 @@ const flyingPages = (options = {}) => {
 
   // Default options incase options is not set
   const defaultOptions = {
-    startDelay: 0,
+    delay: 0,
     ignoreKeywords: [],
     maxRPS: 3,
-    mouseHoverDelay: 200
+    hoverDelay: 200
   };
 
   // Combine default options with received options to create the new config and set the config in window for easy access
   window.FPConfig = Object.assign(defaultOptions, options);
 
-  // Delay preloading if there a startDelay, otherwise start on cpu idle
-  if (config.startDelay)
-    setTimeout(() => startPreloading(), config.startDelay * 1000);
+  // Delay preloading if there a delay, otherwise start on cpu idle
+  if (window.FPConfig.delay)
+    setTimeout(() => startPreloading(), window.FPConfig.delay * 1000);
   else requestIdleCallback(() => startPreloading());
 };
