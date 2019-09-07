@@ -12,7 +12,7 @@
 - [WordPress Plugin](https://wordpress.org/plugins/flying-pages/)
 - [Quicklink vs Instant.page vs Flying Pages](https://wpspeedmatters.com/quicklink-vs-instant-page-vs-flying-pages/)
 
-<a href="https://paypal.me/gijo" target="_blank"><img src="buy-me-a-coffee.png" alt="Buy Me A Coffee" style="height: 50px !important" ></a>
+<a href="https://paypal.me/gijo" target="_blank"><img src="buy-me-a-coffee.png" alt="Buy Me A Coffee" style="height: 20px !important;width: auto !important;" ></a>
 
 ## Usage
 
