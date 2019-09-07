@@ -1,6 +1,14 @@
-Flying Pages preload pages before the user click on it, making them load instantly
+<p align="center">
+  <img src="cover.png">
+</p>
 
-**Demo**: Open [https://wpspeedmatters.com](https://wpspeedmatters.com) and click on any post
+# Flying Pages
+
+> Flying Pages preload pages before the user click on it, making them load instantly
+
+## Demo
+
+Open [https://wpspeedmatters.com](https://wpspeedmatters.com) and click on any post
 
 ## Usage
 
