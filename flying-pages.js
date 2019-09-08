@@ -14,7 +14,7 @@ const isSlowConnection =
   (navigator.connection.saveData ||
     (navigator.connection.effectiveType || "").includes("2g"));
 
-// Prefetch the give url using native 'prefetch'. Fallback to 'xhr' if not supported
+// Prefetch the given url using native 'prefetch'. Fallback to 'xhr' if not supported
 const prefetch = url => {
   // Prefetch using native prefetch
   if (isNativePrefetchSupported) {
@@ -167,8 +167,8 @@ const flyingPages = (options = {}) => {
   // Combine default options with received options to create the new config and set the config in window for easy access
   window.FPConfig = Object.assign(defaultOptions, options);
 
-  // Delay preloading if there a delay, otherwise start on cpu idle
-  if (window.FPConfig.delay)
-    setTimeout(() => startPreloading(), window.FPConfig.delay * 1000);
-  else requestIdleCallback(() => startPreloading());
+  // Start preloading on idle callback, with delay
+  requestIdleCallback(() =>
+    setTimeout(() => startPreloading(), window.FPConfig.delay * 1000)
+  );
 };
