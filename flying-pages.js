@@ -161,7 +161,7 @@ const flyingPages = (options = {}) => {
     delay: 0,
     ignoreKeywords: [],
     maxRPS: 3,
-    hoverDelay: 200
+    hoverDelay: 50
   };
 
   // Combine default options with received options to create the new config and set the config in window for easy access

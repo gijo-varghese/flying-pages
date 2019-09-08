@@ -47,7 +47,7 @@ With options:
       delay: 0,
       ignoreKeywords: [],
       maxRPS: 3,
-      hoverDelay: 200
+      hoverDelay: 50
     });
   });
 </script>
@@ -58,7 +58,7 @@ With options:
 - `delay`: Start prefetching after a delay (in seconds). Will be started when the browser becomes idle, using `requestIdleCallback`. Default to 0.
 - `ignoreKeywords`: An array of keywords to ignore from prefetching. Example `['/logout','/cart','about.html','sample.png','#']`.
 - `maxRPS`: Maximum requests per second the queue should process. Set to 0 to process all requests immediately (without queue). Default to 3.
-- `hoverDelay`: Delay in prefetching links on mouse hover (in milliseconds). Default 200.
+- `hoverDelay`: Delay in prefetching links on mouse hover (in milliseconds). Default 50.
 
 ## How it Works?
 
