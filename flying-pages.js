@@ -57,9 +57,9 @@ const addUrlToQueue = (url, processImmediately = false) => {
   if (window.location.href === url) return;
 
   // Ignore keywords in the array, if matched to the url
-  window.FPConfig.ignoreKeywords.forEach(keyword => {
-    if (url.includes(keyword)) return;
-  });
+  for (let i = 0; i < window.FPConfig.ignoreKeywords.length; i++) {
+    if (url.includes(window.FPConfig.ignoreKeywords[i])) return;
+  }
 
   // If max RPS is 0 or is on mouse hover, process immediately (without queue)
   if (processImmediately) {
@@ -137,21 +137,6 @@ const stopPreloading = () => {
   document.removeEventListener("mouseout", mouseOutListener, true);
 };
 
-// Start preloading
-const startPreloading = () => {
-  // Find all links and and observe them
-  document.querySelectorAll("a").forEach(e => observer.observe(e));
-
-  // Add event listeners to detect mouse hover
-  const eventListenerOptions = { capture: true, passive: true };
-  document.addEventListener(
-    "mouseover",
-    mouseOverListener,
-    eventListenerOptions
-  );
-  document.addEventListener("mouseout", mouseOutListener, eventListenerOptions);
-};
-
 const flyingPages = (options = {}) => {
   // Don't start preloading if user is on a slow connection
   if (isSlowConnection) return;
@@ -167,8 +152,20 @@ const flyingPages = (options = {}) => {
   // Combine default options with received options to create the new config and set the config in window for easy access
   window.FPConfig = Object.assign(defaultOptions, options);
 
-  // Start preloading on idle callback, with delay
+  // Start preloading links in viewport on idle callback, with a delay
   requestIdleCallback(() =>
-    setTimeout(() => startPreloading(), window.FPConfig.delay * 1000)
+    setTimeout(
+      () => document.querySelectorAll("a").forEach(e => observer.observe(e)),
+      window.FPConfig.delay * 1000
+    )
   );
+
+  // Add event listeners to detect mouse hover
+  const eventListenerOptions = { capture: true, passive: true };
+  document.addEventListener(
+    "mouseover",
+    mouseOverListener,
+    eventListenerOptions
+  );
+  document.addEventListener("mouseout", mouseOutListener, eventListenerOptions);
 };
