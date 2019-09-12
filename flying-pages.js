@@ -137,7 +137,7 @@ const stopPreloading = () => {
   document.removeEventListener("mouseout", mouseOutListener, true);
 };
 
-const flyingPages = (options = {}) => {
+function flyingPages(options = {}) {
   // Don't start preloading if user is on a slow connection
   if (isSlowConnection) return;
 
@@ -168,4 +168,4 @@ const flyingPages = (options = {}) => {
     eventListenerOptions
   );
   document.addEventListener("mouseout", mouseOutListener, eventListenerOptions);
-};
+}
