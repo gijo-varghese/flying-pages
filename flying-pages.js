@@ -79,15 +79,16 @@ const observer = new IntersectionObserver(entries => {
 });
 
 // Queue that process requests based on max RPS (requests per second)
-const queue = setInterval(() => {
-  Array.from(toPrefetch)
-    .slice(0, window.FPConfig.maxRPS)
-    .forEach(url => {
-      prefetchWithTimeout(url);
-      alreadyPrefetched.add(url);
-      toPrefetch.delete(url);
-    });
-}, 1000);
+const startQueue = () =>
+  setInterval(() => {
+    Array.from(toPrefetch)
+      .slice(0, window.FPConfig.maxRPS)
+      .forEach(url => {
+        prefetchWithTimeout(url);
+        alreadyPrefetched.add(url);
+        toPrefetch.delete(url);
+      });
+  }, 1000);
 
 let hoverTimer = null;
 
@@ -129,8 +130,8 @@ const stopPreloading = () => {
   // Find all links are remove it from observer (viewport)
   document.querySelectorAll("a").forEach(e => observer.unobserve(e));
 
-  // Stop processing queue
-  clearInterval(queue);
+  // Clear pending links in queue
+  toPrefetch.clear();
 
   // Remove event listeners for mouse hover
   document.removeEventListener("mouseover", mouseOverListener, true);
@@ -151,6 +152,9 @@ function flyingPages(options = {}) {
 
   // Combine default options with received options to create the new config and set the config in window for easy access
   window.FPConfig = Object.assign(defaultOptions, options);
+
+  // Start Queue
+  startQueue();
 
   // Start preloading links in viewport on idle callback, with a delay
   requestIdleCallback(() =>
