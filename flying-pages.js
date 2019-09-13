@@ -102,6 +102,13 @@ const mouseOverListener = event => {
   }
 };
 
+// Preload on touchstart on mobile
+const touchStartListener = event => {
+  const elm = event.target.closest("a");
+  if (elm && elm.href && !alreadyPrefetched.has(elm.href))
+    addUrlToQueue(elm.href, true);
+};
+
 // Clear timeout on mouse out if not already preloaded
 const mouseOutListener = event => {
   const elm = event.target.closest("a");
@@ -133,9 +140,10 @@ const stopPreloading = () => {
   // Clear pending links in queue
   toPrefetch.clear();
 
-  // Remove event listeners for mouse hover
+  // Remove event listeners for mouse hover and mobile touch
   document.removeEventListener("mouseover", mouseOverListener, true);
   document.removeEventListener("mouseout", mouseOutListener, true);
+  document.removeEventListener("touchstart", touchStartListener, true);
 };
 
 function flyingPages(options = {}) {
@@ -164,12 +172,9 @@ function flyingPages(options = {}) {
     )
   );
 
-  // Add event listeners to detect mouse hover
-  const eventListenerOptions = { capture: true, passive: true };
-  document.addEventListener(
-    "mouseover",
-    mouseOverListener,
-    eventListenerOptions
-  );
-  document.addEventListener("mouseout", mouseOutListener, eventListenerOptions);
+  // Add event listeners to detect mouse hover and mobile touch
+  const listenerOptions = { capture: true, passive: true };
+  document.addEventListener("mouseover", mouseOverListener, listenerOptions);
+  document.addEventListener("mouseout", mouseOutListener, listenerOptions);
+  document.addEventListener("touchstart", touchStartListener, listenerOptions);
 }
