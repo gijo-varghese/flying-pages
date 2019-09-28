@@ -14,6 +14,11 @@ const isSlowConnection =
   (navigator.connection.saveData ||
     (navigator.connection.effectiveType || "").includes("2g"));
 
+// Check browser is IE
+const isIE =
+  navigator.userAgent.indexOf("MSIE ") > -1 ||
+  navigator.userAgent.indexOf("Trident/") > -1;
+
 // Prefetch the given url using native 'prefetch'. Fallback to 'xhr' if not supported
 const prefetch = url => {
   // Prefetch using native prefetch
@@ -69,7 +74,7 @@ const addUrlToQueue = (url, processImmediately = false) => {
 };
 
 // Observe the links in viewport, add url to queue if found intersecting
-const observer = new IntersectionObserver(entries => {
+const linksObserver = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const url = entry.target.href;
@@ -135,7 +140,7 @@ const requestIdleCallback =
 // Stop preloading in case server is responding slow/errors
 const stopPreloading = () => {
   // Find all links are remove it from observer (viewport)
-  document.querySelectorAll("a").forEach(e => observer.unobserve(e));
+  document.querySelectorAll("a").forEach(e => linksObserver.unobserve(e));
 
   // Clear pending links in queue
   toPrefetch.clear();
@@ -147,8 +152,8 @@ const stopPreloading = () => {
 };
 
 function flyingPages(options = {}) {
-  // Don't start preloading if user is on a slow connection
-  if (isSlowConnection) return;
+  // Don't start preloading if user is on a slow connection or browser is IE
+  if (isSlowConnection || isIE) return;
 
   // Default options incase options is not set
   const defaultOptions = {
@@ -167,7 +172,8 @@ function flyingPages(options = {}) {
   // Start preloading links in viewport on idle callback, with a delay
   requestIdleCallback(() =>
     setTimeout(
-      () => document.querySelectorAll("a").forEach(e => observer.observe(e)),
+      () =>
+        document.querySelectorAll("a").forEach(e => linksObserver.observe(e)),
       window.FPConfig.delay * 1000
     )
   );
