@@ -4,47 +4,34 @@ function flyingPages(options = {}) {
 
   // Check browser support for native 'prefetch'
   const prefetcher = document.createElement("link");
-  const isNativePrefetchSupported =
+  const isSupported =
     prefetcher.relList &&
     prefetcher.relList.supports &&
-    prefetcher.relList.supports("prefetch");
+    prefetcher.relList.supports("prefetch") &&
+    window.IntersectionObserver &&
+    "isIntersecting" in IntersectionObserverEntry.prototype;
 
-  // Checks if user is on slow connection or have enabled data saver
+  // Checks if user is on slow connection or has enabled data saver
   const isSlowConnection =
     navigator.connection &&
     (navigator.connection.saveData ||
       (navigator.connection.effectiveType || "").includes("2g"));
 
-  // Check browser is IE
-  const isIE =
-    navigator.userAgent.indexOf("MSIE ") > -1 ||
-    navigator.userAgent.indexOf("Trident/") > -1;
+  // Don't start preloading if user is on a slow connection or not supported
+  if (isSlowConnection || !isSupported) return;
 
   // Prefetch the given url using native 'prefetch'. Fallback to 'xhr' if not supported
-  const prefetch = url => {
-    // Prefetch using native prefetch
-    if (isNativePrefetchSupported) {
-      return new Promise((resolve, reject) => {
-        const link = document.createElement(`link`);
-        link.rel = `prefetch`;
-        link.href = url;
-        link.onload = resolve;
-        link.onerror = reject;
-        document.head.appendChild(link);
-      });
-    }
-    // Pretch using xhr
-    return new Promise((resolve, reject) => {
-      const req = new XMLHttpRequest();
-      req.open(`GET`, url, (req.withCredentials = true));
-      req.onload = () => {
-        req.status === 200 ? resolve() : reject();
-      };
-      req.send();
+  const prefetch = url =>
+    new Promise((resolve, reject) => {
+      const link = document.createElement(`link`);
+      link.rel = `prefetch`;
+      link.href = url;
+      link.onload = resolve;
+      link.onerror = reject;
+      document.head.appendChild(link);
     });
-  };
 
-  // Prefetch pages with a default timeout
+  // Prefetch pages with a timeout
   const prefetchWithTimeout = url => {
     const timer = setTimeout(() => stopPreloading(), 5000);
     prefetch(url)
@@ -151,9 +138,6 @@ function flyingPages(options = {}) {
     document.removeEventListener("mouseout", mouseOutListener, true);
     document.removeEventListener("touchstart", touchStartListener, true);
   };
-
-  // Don't start preloading if user is on a slow connection or browser is IE
-  if (isSlowConnection || isIE) return;
 
   // Default options incase options is not set
   const defaultOptions = {

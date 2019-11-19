@@ -4,7 +4,7 @@
   "description": "Load inner pages instantly, intelligently!",
   "main": "flying-pages.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "minify flying-pages.js -o flying-pages.min.js"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/gijo-varghese/flying-pages/issues"
   },
-  "homepage": "https://github.com/gijo-varghese/flying-pages#readme"
+  "homepage": "https://github.com/gijo-varghese/flying-pages#readme",
+  "devDependencies": {
+    "babel-minify": "^0.5.1"
+  }
 }
