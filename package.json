@@ -4,7 +4,7 @@
   "description": "Load inner pages instantly, intelligently!",
   "main": "flying-pages.js",
   "scripts": {
-    "build": "minify flying-pages.js -o flying-pages.min.js"
+    "build": "babel flying-pages.js -o flying-pages.min.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,9 @@
   },
   "homepage": "https://github.com/gijo-varghese/flying-pages#readme",
   "devDependencies": {
-    "babel-minify": "^0.5.1"
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-minify": "^0.5.1"
   }
 }

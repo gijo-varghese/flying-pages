@@ -1,4 +1,4 @@
-function flyingPages(options = {}) {
+function flyingPages() {
   const toPrefetch = new Set();
   const alreadyPrefetched = new Set();
 
@@ -148,7 +148,7 @@ function flyingPages(options = {}) {
   };
 
   // Combine default options with received options to create the new config and set the config in window for easy access
-  window.FPConfig = Object.assign(defaultOptions, options);
+  window.FPConfig = Object.assign(defaultOptions, window.FPConfig);
 
   // Start Queue
   startQueue();
@@ -168,3 +168,5 @@ function flyingPages(options = {}) {
   document.addEventListener("mouseout", mouseOutListener, listenerOptions);
   document.addEventListener("touchstart", touchStartListener, listenerOptions);
 }
+
+flyingPages();
