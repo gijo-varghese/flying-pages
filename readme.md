@@ -21,36 +21,20 @@ Quickstart:
 
 ```html
 <script src="flying-pages.min.js"></script>
-<script>
-  flyingPages();
-</script>
-```
-
-With async/defer (recommended):
-
-```html
-<script defer src="flying-pages.min.js"></script>
-<script>
-  window.addEventListener("load", () => {
-    flyingPages();
-  });
-</script>
 ```
 
 With options:
 
 ```html
-<script defer src="flying-pages.min.js"></script>
 <script>
-  window.addEventListener("load", () => {
-    flyingPages({
-      delay: 0,
-      ignoreKeywords: [],
-      maxRPS: 3,
-      hoverDelay: 50
-    });
-  });
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 3,
+    hoverDelay: 50
+  };
 </script>
+<script defer src="flying-pages.min.js"></script>
 ```
 
 `flyingPages` accepts optional options object with the following parameters:
