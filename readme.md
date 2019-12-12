@@ -37,8 +37,6 @@ With options:
 <script defer src="flying-pages.min.js"></script>
 ```
 
-`flyingPages` accepts optional options object with the following parameters:
-
 - `delay`: Start prefetching after a delay (in seconds). Will be started when the browser becomes idle, using `requestIdleCallback`. Default to 0.
 - `ignoreKeywords`: An array of keywords to ignore from prefetching. Example `['/logout','/cart','about.html','sample.png','#']`.
 - `maxRPS`: Maximum requests per second the queue should process. Set to 0 to process all requests immediately (without queue). Default to 3.
