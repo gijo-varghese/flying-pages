@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <style>
+      a {
+        line-height: 50px;
+        margin: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      for (let i = 0; i < 500; i++) {
+        const link = document.createElement("a");
+        link.innerText = "Link " + i;
+        link.id = i;
+        link.setAttribute("href", "#" + i);
+        document.querySelector("body").appendChild(link);
+      }
+    </script>
+    <script src="flying-pages.js"></script>
+  </body>
+</html>
