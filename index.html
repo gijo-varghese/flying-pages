@@ -13,10 +13,10 @@
         const link = document.createElement("a");
         link.innerText = "Link " + i;
         link.id = i;
-        link.setAttribute("href", "#" + i);
+        link.setAttribute("href", "?id=" + i);
         document.querySelector("body").appendChild(link);
       }
     </script>
-    <script src="flying-pages.js"></script>
+    <script type="module" src="src/index.mjs"></script>
   </body>
 </html>
