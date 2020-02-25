@@ -1,0 +1,29 @@
+{
+  "name": "flying-pages",
+  "version": "3.0.0",
+  "description": "Load inner pages instantly, intelligently!",
+  "main": "dist/flying-pages.js",
+  "module": "dist/flying-pages.mjs",
+  "jsnext:main": "dist/flying-pages.mjs",
+  "umd:main": "dist/flying-pages.umd.js",
+  "unpkg": "dist/flying-pages.umd.js",
+  "scripts": {
+    "start": "serve",
+    "build": "microbundle src/index.mjs --no-sourcemap --external none --output dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gijo-varghese/flying-pages.git"
+  },
+  "author": "Gijo Varghese <gijovarghese141@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/gijo-varghese/flying-pages/issues"
+  },
+  "homepage": "https://github.com/gijo-varghese/flying-pages#readme",
+  "devDependencies": {
+    "microbundle": "^0.11.0",
+    "serve": "^11.3.0"
+  },
+  "dependencies": {}
+}
