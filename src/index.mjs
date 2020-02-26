@@ -12,7 +12,14 @@ const observer = new IntersectionObserver((entries, observer) => {
   );
 });
 
-document.querySelectorAll("a").forEach(link => observer.observe(link));
+const excludeKeywords = [];
+
+document
+  .querySelectorAll(`a[href^='${window.location.origin}']`)
+  .forEach(link => {
+    if (new RegExp(excludeKeywords.join("|")).test(link.href)) return;
+    observer.observe(link);
+  });
 
 const preloadLinksOnMouseMose = e => {
   [...availableLinks].forEach(link => {
