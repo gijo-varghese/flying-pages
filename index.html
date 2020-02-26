@@ -17,6 +17,9 @@
         document.querySelector("body").appendChild(link);
       }
     </script>
-    <script type="module" src="src/index.mjs"></script>
+    <script type="module">
+      import { listen } from "/src/index.mjs";
+      listen();
+    </script>
   </body>
 </html>

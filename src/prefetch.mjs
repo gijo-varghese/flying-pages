@@ -1,5 +1,3 @@
-import limitExecution from "./limit-execution.mjs";
-
 const prefetchViaDOM = url =>
   new Promise((resolve, reject) => {
     const link = document.createElement("link");
@@ -21,18 +19,4 @@ const isDomPrefetchSupported = () => {
 
 const prefetch = isDomPrefetchSupported() ? prefetchViaDOM : prefetchViaFetch;
 
-const alreadyPrefetched = new Set();
-
-const [toAdd, isDone] = limitExecution(3);
-
-const prefetchWithConcurrency = url => {
-  if (alreadyPrefetched.has(url)) return;
-  alreadyPrefetched.add(url);
-  toAdd(() => {
-    prefetch(url)
-      .then(isDone)
-      .catch(isDone);
-  });
-};
-
-export default prefetchWithConcurrency;
+export default prefetch;
