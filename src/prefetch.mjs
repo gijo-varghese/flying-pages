@@ -35,6 +35,7 @@ const prefetch = isDomPrefetchSupported() ? prefetchViaDOM : prefetchViaFetch;
 const prefetchWithConcurrency = url => {
   if (alreadyPrefetched.has(url)) return;
   alreadyPrefetched.add(url);
+  document.querySelector(`a[href='${url}']`).style.color = "red";
   toAdd(() => {
     prefetch(url)
       .then(isDone)
