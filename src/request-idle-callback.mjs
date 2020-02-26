@@ -1,4 +1,4 @@
-// Use requestIdleCallback if supoprted, otherwise use polyfill.
+// Use native requestIdleCallback if supoprted, otherwise use a fallback.
 // Browser support: https://caniuse.com/#feat=requestidlecallback
 
 const requestIdleCallback =

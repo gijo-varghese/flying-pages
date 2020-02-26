@@ -1,3 +1,10 @@
+// Prefetch a give URL. Use native DOM prefetch if available,
+// Otherwise use native Fetch.
+// XHR is not implement since it's only needed for Internet Explorer
+// and IE doesn't support intersectionObserver which is necessary
+// Prefetch browser support: https://caniuse.com/#feat=link-rel-prefetch
+// `Fetch` browser support: https://caniuse.com/#feat=fetch
+
 const prefetchViaDOM = url =>
   new Promise((resolve, reject) => {
     const link = document.createElement("link");

@@ -1,10 +1,13 @@
+// Throttle functions calls
+// Source: https://stackoverflow.com/questions/27078285/simple-throttle-in-js
+
 const throttle = (callback, limit) => {
   var wait = false;
-  return function() {
+  return () => {
     if (!wait) {
       callback.apply(null, arguments);
       wait = true;
-      setTimeout(function() {
+      setTimeout(() => {
         wait = false;
       }, limit);
     }

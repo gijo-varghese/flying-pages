@@ -1,3 +1,6 @@
+// Calculate distance from a given x,y to the element
+// Source: https://css-tricks.com/snippets/jquery/calculate-distance-between-mouse-and-element/
+
 const distanceToElem = (elem, x, y) =>
   Math.floor(
     Math.sqrt(

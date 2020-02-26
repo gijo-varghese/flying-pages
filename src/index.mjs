@@ -3,20 +3,30 @@ import distanceToElem from "./distance-to-elem.mjs";
 import prefetch from "./prefetch.mjs";
 import limitExecution from "./limit-execution.mjs";
 
+// Check IntersectionObserver is supported
+// If IntersectionObserver is not supported, we won't be able to run
+// Browser support: https://caniuse.com/#feat=intersectionobserver
 const isIntersectionObserverSupported =
   window.IntersectionObserver &&
   "isIntersecting" in IntersectionObserverEntry.prototype;
 
+// Check user is on a solution connection (like 2G) or has enable Data-saver
+// Don't preload if user is on slow connection
 const isSlowConnection =
   navigator.connection &&
   (navigator.connection.saveData ||
     (navigator.connection.effectiveType || "").includes("2g"));
 
+// Detect mobile (and tablet)
+// Separate settings can be conifgured for mobile and desktop. In mobile, it's ideal
+// to preload all links since the viewport is small and there is no mouse pointer
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
   navigator.userAgent
 );
 
+// Main function
 export function listen(options) {
+  // Return if user is on slow connection or intersectionObserver is not supported
   if (isSlowConnection || !isIntersectionObserverSupported) return;
 
   const defaultOptions = {
