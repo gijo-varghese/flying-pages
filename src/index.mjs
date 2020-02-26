@@ -1,6 +1,7 @@
 import throttle from "./throttle.mjs";
 import distanceToElem from "./distance-to-elem.mjs";
 import prefetchWithConcurrency from "./prefetch.mjs";
+import limitExecution from "./limit-execution.mjs";
 
 // Check IntersectionObserver is supported
 // If IntersectionObserver is not supported, we won't be able to run
@@ -28,7 +29,6 @@ export function listen(options) {
   // Return if user is on slow connection or intersectionObserver is not supported
   if (isSlowConnection || !isIntersectionObserverSupported) return;
 
-  // Merge received options with our default options.
   const defaultOptions = {
     throttle: 3,
     desktopPreloadMethod: "nearby-mouse",
@@ -36,24 +36,27 @@ export function listen(options) {
     mouseProximity: 200,
     excludeKeywords: []
   };
+
+  // Merge received options with our default options.
   options = { ...defaultOptions, ...options };
 
-  const availableLinks = new Set();
+  const linksInViewport = new Set();
+  const [toAdd, isDone] = limitExecution(options.throttle);
 
   const preloadMethod = isMobile
     ? options.mobilePreloadMethod
     : options.desktopPreloadMethod;
 
-  // Observer that will observe links and
   const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (preloadMethod === "all-in-viewport")
-        entry.isIntersecting && prefetchWithConcurrency(entry.target.href);
+        entry.isIntersecting &&
+          prefetchWithConcurrency(entry.target.href, toAdd, isDone);
 
       if (preloadMethod === "nearby-mouse")
         entry.isIntersecting
-          ? availableLinks.add(entry.target)
-          : availableLinks.delete(entry.target);
+          ? linksInViewport.add(entry.target)
+          : linksInViewport.delete(entry.target);
     });
   });
 
@@ -66,18 +69,20 @@ export function listen(options) {
       observer.observe(link);
     });
 
-  const preloadLinksOnMouseMove = e => {
-    [...availableLinks].forEach(link => {
-      const mouseToElemDistance = distanceToElem(link, e.pageX, e.pageY);
-      if (mouseToElemDistance < options.mouseProximity) {
-        prefetchWithConcurrency(link.href);
-        link.style.color = "red";
-      }
-    });
-  };
+  if (preloadMethod === "nearby-mouse") {
+    const preloadLinksOnMouseMove = e => {
+      [...linksInViewport].forEach(link => {
+        const mouseToElemDistance = distanceToElem(link, e.pageX, e.pageY);
+        if (mouseToElemDistance < options.mouseProximity) {
+          prefetchWithConcurrency(link.href, toAdd, isDone);
+          link.style.color = "red";
+        }
+      });
+    };
 
-  document.addEventListener(
-    "mousemove",
-    throttle(preloadLinksOnMouseMove, 300)
-  );
+    document.addEventListener(
+      "mousemove",
+      throttle(preloadLinksOnMouseMove, 300)
+    );
+  }
 }

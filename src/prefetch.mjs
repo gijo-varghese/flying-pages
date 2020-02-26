@@ -5,11 +5,7 @@
 // Prefetch browser support: https://caniuse.com/#feat=link-rel-prefetch
 // `Fetch` browser support: https://caniuse.com/#feat=fetch
 
-import limitExecution from "./limit-execution.mjs";
-
 const alreadyPrefetched = new Set();
-
-const [toAdd, isDone] = limitExecution(3);
 
 const prefetchViaDOM = url =>
   new Promise((resolve, reject) => {
@@ -32,7 +28,7 @@ const isDomPrefetchSupported = () => {
 
 const prefetch = isDomPrefetchSupported() ? prefetchViaDOM : prefetchViaFetch;
 
-const prefetchWithConcurrency = url => {
+const prefetchWithConcurrency = (url, toAdd, isDone) => {
   if (alreadyPrefetched.has(url)) return;
   alreadyPrefetched.add(url);
   document.querySelector(`a[href='${url}']`).style.color = "red";
