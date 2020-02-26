@@ -1,7 +1,6 @@
 import throttle from "./throttle.mjs";
 import distanceToElem from "./distance-to-elem.mjs";
-import prefetch from "./prefetch.mjs";
-import limitExecution from "./limit-execution.mjs";
+import prefetchWithConcurrency from "./prefetch.mjs";
 
 // Check IntersectionObserver is supported
 // If IntersectionObserver is not supported, we won't be able to run
@@ -10,7 +9,7 @@ const isIntersectionObserverSupported =
   window.IntersectionObserver &&
   "isIntersecting" in IntersectionObserverEntry.prototype;
 
-// Check user is on a solution connection (like 2G) or has enable Data-saver
+// Check user is on a solution connection (like 2G) or has enabled Data-saver
 // Don't preload if user is on slow connection
 const isSlowConnection =
   navigator.connection &&
@@ -29,6 +28,7 @@ export function listen(options) {
   // Return if user is on slow connection or intersectionObserver is not supported
   if (isSlowConnection || !isIntersectionObserverSupported) return;
 
+  // Merge received options with our default options.
   const defaultOptions = {
     throttle: 3,
     desktopPreloadMethod: "nearby-mouse",
@@ -38,17 +38,24 @@ export function listen(options) {
   };
   options = { ...defaultOptions, ...options };
 
+  const availableLinks = new Set();
+
   const preloadMethod = isMobile
     ? options.mobilePreloadMethod
     : options.desktopPreloadMethod;
 
-  const availableLinks = new Set();
-
+  // Observer that will observe links and
   const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
-      entry.isIntersecting
-        ? availableLinks.add(entry.target)
-        : availableLinks.delete(entry.target);
+      // Mobile/Tablet
+      if (preloadMethod === "all-in-viewport")
+        entry.isIntersecting && prefetchWithConcurrency(entry.target.href);
+
+      // Desktop
+      if (preloadMethod === "nearby-mouse")
+        entry.isIntersecting
+          ? availableLinks.add(entry.target)
+          : availableLinks.delete(entry.target);
     });
   });
 
@@ -63,24 +70,10 @@ export function listen(options) {
       observer.observe(link);
     });
 
-  const alreadyPrefetched = new Set();
-
-  const [toAdd, isDone] = limitExecution(options.throttle);
-
-  const prefetchWithConcurrency = url => {
-    if (alreadyPrefetched.has(url)) return;
-    alreadyPrefetched.add(url);
-    toAdd(() => {
-      prefetch(url)
-        .then(isDone)
-        .catch(isDone);
-    });
-  };
-
-  const preloadLinksOnMouseMose = e => {
+  const preloadLinksOnMouseMove = e => {
     [...availableLinks].forEach(link => {
       const mouseToElemDistance = distanceToElem(link, e.pageX, e.pageY);
-      if (mouseToElemDistance < options.proximity) {
+      if (mouseToElemDistance < options.mouseProximity) {
         prefetchWithConcurrency(link.href);
         link.style.color = "red";
       }
@@ -89,6 +82,6 @@ export function listen(options) {
 
   document.addEventListener(
     "mousemove",
-    throttle(preloadLinksOnMouseMose, 300)
+    throttle(preloadLinksOnMouseMove, 300)
   );
 }

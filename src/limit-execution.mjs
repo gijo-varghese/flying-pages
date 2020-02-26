@@ -4,21 +4,25 @@
 
 const limitExecution = limit => {
   limit = limit || 1;
-  const queue = [],
+  var queue = [],
     wip = 0;
-  const toAdd = fn => {
-    queue.push(fn) > 1 || run();
-  };
-  const isDone = () => {
-    wip--;
+
+  function toAdd(fn) {
+    queue.push(fn) > 1 || run(); // initializes if 1st
+  }
+
+  function isDone() {
+    wip--; // make room for next
     run();
-  };
-  const run = () => {
+  }
+
+  function run() {
     if (wip < limit && queue.length > 0) {
       queue.shift()();
-      wip++;
+      wip++; // is now WIP
     }
-  };
+  }
+
   return [toAdd, isDone];
 };
 
