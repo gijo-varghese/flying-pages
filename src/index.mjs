@@ -47,11 +47,9 @@ export function listen(options) {
   // Observer that will observe links and
   const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
-      // Mobile/Tablet
       if (preloadMethod === "all-in-viewport")
         entry.isIntersecting && prefetchWithConcurrency(entry.target.href);
 
-      // Desktop
       if (preloadMethod === "nearby-mouse")
         entry.isIntersecting
           ? availableLinks.add(entry.target)
@@ -62,10 +60,8 @@ export function listen(options) {
   document
     .querySelectorAll(`a[href^='${window.location.origin}']`)
     .forEach(link => {
-      if (
-        options.excludeKeywords.length &&
-        new RegExp(options.excludeKeywords.join("|")).test(link.href)
-      )
+      const excludeRegex = new RegExp(options.excludeKeywords.join("|"));
+      if (options.excludeKeywords.length && excludeRegex.test(link.href))
         return;
       observer.observe(link);
     });
