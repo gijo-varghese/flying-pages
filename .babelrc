@@ -1,4 +1,4 @@
 {
-  "presets": ["es2015", "minify"],
+  "presets": ["@babel/preset-env", "minify"],
   "comments": false
 }
