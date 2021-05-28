@@ -21,20 +21,27 @@ Quickstart:
 
 ```html
 <script src="flying-pages.min.js"></script>
+<script>
+  flyingPages.listen();
+</script>
 ```
 
 With options:
 
 ```html
+<script src="flying-pages.min.js"></script>
 <script>
-  window.FPConfig = {
-    delay: 0,
-    ignoreKeywords: [],
-    maxRPS: 3,
-    hoverDelay: 50,
-  };
+  flyingPages.listen({
+    delay: 2,
+    ignoreKeywords: [
+      '/connexion',
+      '/deconnexion',
+      '#'
+    ],
+    maxRPS: 5,
+    hoverDelay: 25
+  });
 </script>
-<script defer src="flying-pages.min.js"></script>
 ```
 
 - `delay`: Start prefetching after a delay (in seconds). Will be started when the browser becomes idle, using `requestIdleCallback`. Default to 0.
@@ -57,3 +64,7 @@ Flying Pages is intelligent to make sure prefetching doesn't crash your server o
 - **Stops prefetching if the server is busy** - In case the server starts to respond slowly or return errors, prefetching will be stopped to reduce the server load.
 
 - **Understands user's connection and preferences** - Checks if the user is on a slow connection like 2G or has enabled data-saver. Flying Pages won't prefetch anything in this case.
+
+## Changelog
+
+**2021-04-05**: mod to make the script work without defer and without having to set options before the script call. Replacing window.FPConfig{}; before the script call with flyingPages.listen(); after the script call (see [Usage](#Usage)).
