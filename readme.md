@@ -6,7 +6,6 @@
 
 > Flying Pages prefetch pages before the user click on links, making them load instantly
 
-
 ## Quick Links
 
 - Demo: Open [https://wpspeedmatters.com](https://wpspeedmatters.com) and click on any post
@@ -50,7 +49,6 @@ With options:
 - `maxRPS`: Maximum requests per second the queue should process. Set to 0 to process all requests immediately (without queue). Default to 3.
 - `hoverDelay`: Delay in prefetching links on mouse hover (in milliseconds). Default 50.
 
-
 ## How it Works?
 
 Flying Pages injects a tiny JavaScript code (1KB gzipped), waits until the browser becomes idle. Then it detects pages in the viewport and on mouse hover and prefetch them.
@@ -67,7 +65,6 @@ Flying Pages is intelligent to make sure prefetching doesn't crash your server o
 
 - **Understands user's connection and preferences** - Checks if the user is on a slow connection like 2G or has enabled data-saver. Flying Pages won't prefetch anything in this case.
 
-
-# Changelog
+## Changelog
 
 **2021-04-05**: mod to make the script work without defer and without having to set options before the script call. Replacing window.FPConfig{}; before the script call with flyingPages.listen(); after the script call (see [Usage](#Usage)).
