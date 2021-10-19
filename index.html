@@ -12,7 +12,7 @@
       for (let i = 0; i < 500; i++) {
         const link = document.createElement("a");
         link.innerText = "Link " + i;
-        link.id = i;
+        link.id = "link" + i;
         link.setAttribute("href", window.location.origin + "/?id=" + i);
         document.querySelector("body").appendChild(link);
       }
