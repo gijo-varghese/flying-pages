@@ -82,20 +82,19 @@ export function listen(options) {
       observer.observe(link);
     });
 
-  if (preloadMethod === "nearby-mouse") {
-    const preloadLinksOnMouseMove = (e) => {
-      [...linksInViewport].forEach((link) => {
-        const mouseToElemDistance = distanceToElem(link, e.pageX, e.pageY);
-        if (mouseToElemDistance < options.mouseProximity) {
-          prefetchWithConcurrency(link.href, toAdd, isDone);
-          link.style.color = "red";
-        }
-      });
-    };
+  const prefetchLinksOnMouseMove = (e) => {
+    [...linksInViewport].forEach((link) => {
+      const mouseToElemDistance = distanceToElem(link, e.pageX, e.pageY);
+      if (mouseToElemDistance < options.mouseProximity) {
+        prefetchWithConcurrency(link.href, toAdd, isDone);
+        link.style.color = "red";
+      }
+    });
+  };
 
+  if (preloadMethod === "nearby-mouse")
     document.addEventListener(
       "mousemove",
-      throttle(preloadLinksOnMouseMove, 300)
+      throttle(prefetchLinksOnMouseMove, 300)
     );
-  }
 }
