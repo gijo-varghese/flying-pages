@@ -46,7 +46,7 @@ export function listen(options) {
     throttle: 3,
     desktopPreloadMethod: "nearby-mouse",
     mobilePreloadMethod: "all-in-viewport",
-    mouseProximity: 200,
+    mouseProximity: 100,
     excludeKeywords: [],
   };
 
@@ -95,6 +95,6 @@ export function listen(options) {
   if (preloadMethod === "nearby-mouse")
     document.addEventListener(
       "mousemove",
-      throttle(prefetchLinksOnMouseMove, 300)
+      throttle(prefetchLinksOnMouseMove, 500)
     );
 }
