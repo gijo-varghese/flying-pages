@@ -8,7 +8,6 @@
   "umd:main": "dist/flying-pages.umd.js",
   "unpkg": "dist/flying-pages.umd.js",
   "scripts": {
-    "start": "serve",
     "build": "microbundle src/index.mjs --no-sourcemap --external none --output dist"
   },
   "repository": {
@@ -22,8 +21,6 @@
   },
   "homepage": "https://github.com/gijo-varghese/flying-pages#readme",
   "devDependencies": {
-    "microbundle": "^0.11.0",
-    "serve": "^11.3.0"
-  },
-  "dependencies": {}
+    "microbundle": "^0.14.1"
+  }
 }
