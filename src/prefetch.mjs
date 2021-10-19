@@ -7,7 +7,7 @@
 
 const alreadyPrefetched = new Set();
 
-const prefetchViaDOM = url =>
+const prefetch = (url) =>
   new Promise((resolve, reject) => {
     const link = document.createElement("link");
     link.rel = "prefetch";
@@ -17,25 +17,12 @@ const prefetchViaDOM = url =>
     document.head.appendChild(link);
   });
 
-const prefetchViaFetch = url => fetch(url, { credentials: `include` });
-
-const isDomPrefetchSupported = () => {
-  const link = document.createElement("link");
-  return (
-    link.relList && link.relList.supports && link.relList.supports("prefetch")
-  );
-};
-
-const prefetch = isDomPrefetchSupported() ? prefetchViaDOM : prefetchViaFetch;
-
 const prefetchWithConcurrency = (url, toAdd, isDone) => {
   if (alreadyPrefetched.has(url)) return;
   alreadyPrefetched.add(url);
   document.querySelector(`a[href='${url}']`).style.color = "red";
   toAdd(() => {
-    prefetch(url)
-      .then(isDone)
-      .catch(isDone);
+    prefetch(url).then(isDone).catch(isDone);
   });
 };
 
