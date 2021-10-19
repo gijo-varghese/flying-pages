@@ -2,7 +2,7 @@
 // Use `toAdd` to push elements, and when done, call `isDone`
 // Source: https://github.com/lukeed/throttles/blob/master/src/single.js
 
-const limitExecution = limit => {
+const limitExecution = (limit) => {
   limit = limit || 1;
   var queue = [],
     wip = 0;

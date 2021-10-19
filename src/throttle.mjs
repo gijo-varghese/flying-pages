@@ -3,7 +3,7 @@
 
 const throttle = (callback, limit) => {
   var wait = false;
-  return function() {
+  return function () {
     if (!wait) {
       callback.apply(null, arguments);
       wait = true;

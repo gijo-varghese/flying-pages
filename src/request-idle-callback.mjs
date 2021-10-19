@@ -3,14 +3,14 @@
 
 const requestIdleCallback =
   window.requestIdleCallback ||
-  function(cb) {
+  function (cb) {
     const start = Date.now();
-    return setTimeout(function() {
+    return setTimeout(function () {
       cb({
         didTimeout: false,
-        timeRemaining: function() {
+        timeRemaining: function () {
           return Math.max(0, 50 - (Date.now() - start));
-        }
+        },
       });
     }, 1);
   };
