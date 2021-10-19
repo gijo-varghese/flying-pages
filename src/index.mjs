@@ -54,7 +54,7 @@ export function listen(options) {
   options = { ...defaultOptions, ...options };
 
   const linksInViewport = new Set();
-  const [toAdd, isDone] = limitExecution(options.throttle);
+  const limiter = limitExecution(options.throttle);
 
   const preloadMethod = isMobile
     ? options.mobilePreloadMethod
@@ -64,7 +64,7 @@ export function listen(options) {
     entries.forEach((entry) => {
       if (preloadMethod === "all-in-viewport")
         entry.isIntersecting &&
-          prefetchWithConcurrency(entry.target.href, toAdd, isDone);
+          prefetchWithConcurrency(entry.target.href, limiter);
 
       if (preloadMethod === "nearby-mouse")
         entry.isIntersecting
@@ -86,7 +86,7 @@ export function listen(options) {
     [...linksInViewport].forEach((link) => {
       const mouseToElemDistance = distanceToElem(link, e.pageX, e.pageY);
       if (mouseToElemDistance < options.mouseProximity) {
-        prefetchWithConcurrency(link.href, toAdd, isDone);
+        prefetchWithConcurrency(link.href, limiter);
         link.style.color = "red";
       }
     });
@@ -95,6 +95,6 @@ export function listen(options) {
   if (preloadMethod === "nearby-mouse")
     document.addEventListener(
       "mousemove",
-      throttle(prefetchLinksOnMouseMove, 500)
+      throttle(prefetchLinksOnMouseMove, 200)
     );
 }

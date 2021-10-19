@@ -13,7 +13,8 @@ const prefetch = (url) =>
     document.head.appendChild(link);
   });
 
-const prefetchWithConcurrency = (url, toAdd, isDone) => {
+const prefetchWithConcurrency = (url, limiter) => {
+  const [toAdd, isDone] = limiter;
   if (alreadyPrefetched.has(url)) return;
   alreadyPrefetched.add(url);
   document.querySelector(`a[href='${url}']`).style.color = "red";
